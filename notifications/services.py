@@ -1,4 +1,5 @@
 from .models import Notification
+from .dispatcher import NotificationDispatcher
 
 
 class NotificationService:
@@ -9,8 +10,7 @@ class NotificationService:
             message=message,
             timestamp=timestamp
         )
-        return notification
 
-    @staticmethod
-    def get_all_notifications():
-        return Notification.objects.all().order_by("-timestamp")
+        delivery_status = NotificationDispatcher.dispatch(notification)
+
+        return notification, delivery_status

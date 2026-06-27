@@ -30,13 +30,14 @@ class NotificationViewSet(viewsets.ModelViewSet):
 def send_notification(request):
     data = request.data
 
-    notification = NotificationService.create_notification(
+    notification, delivery_status = NotificationService.create_notification(
         notification_type=data["type"],
         message=data["message"],
         timestamp=data["timestamp"],
     )
 
     return Response({
-        "message": "Notification sent successfully",
-        "id": str(notification.id)
+        "message": "Notification dispatched successfully",
+        "id": str(notification.id),
+        "delivery_status": delivery_status
     })

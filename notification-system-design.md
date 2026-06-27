@@ -20,3 +20,17 @@ GET /evaluation-service/notifications/?search=placement
 
 ### Result
 The API is faster, cleaner, and ready for larger notification data.
+## Stage 4 – Notification Sending
+
+### Current Implementation
+- Notification creation is handled through a dedicated service layer.
+- The API delegates business logic to `NotificationService`.
+
+### Future Improvements
+For large-scale deployments (50,000+ students), notifications should be processed asynchronously using:
+- Message Queue (RabbitMQ, Kafka, or Redis)
+- Background workers (Celery)
+- Batch processing
+- Retry mechanisms for failed deliveries
+
+This architecture prevents blocking HTTP requests and improves scalability.

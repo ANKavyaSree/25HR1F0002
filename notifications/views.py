@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+from .services import NotificationService
 from .models import Notification
 from .serializers import NotificationSerializer
 
@@ -23,3 +23,20 @@ class NotificationViewSet(viewsets.ModelViewSet):
             "message",
             "timestamp"
         ).order_by("-timestamp")
+    
+
+
+@api_view(["POST"])
+def send_notification(request):
+    data = request.data
+
+    notification = NotificationService.create_notification(
+        notification_type=data["type"],
+        message=data["message"],
+        timestamp=data["timestamp"],
+    )
+
+    return Response({
+        "message": "Notification sent successfully",
+        "id": str(notification.id)
+    })

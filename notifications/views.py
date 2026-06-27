@@ -10,7 +10,16 @@ from .serializers import NotificationSerializer
 def health_check(request):
     return Response({"status": "ok"})
 
-
 class NotificationViewSet(viewsets.ModelViewSet):
-    queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
+    filterset_fields = ["type"]
+    search_fields = ["message"]
+    ordering_fields = ["timestamp", "type"]
+
+    def get_queryset(self):
+        return Notification.objects.only(
+            "id",
+            "type",
+            "message",
+            "timestamp"
+        ).order_by("-timestamp")

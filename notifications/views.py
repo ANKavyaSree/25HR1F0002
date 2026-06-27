@@ -4,7 +4,14 @@ from rest_framework.response import Response
 from .services import NotificationService
 from .models import Notification
 from .serializers import NotificationSerializer
+from logging_middleware import log
 
+log(
+    stack="backend",
+    level="info",
+    package_name="service",
+    message="Notification created successfully"
+)
 
 @api_view(["GET"])
 def health_check(request):
@@ -41,3 +48,4 @@ def send_notification(request):
         "id": str(notification.id),
         "delivery_status": delivery_status
     })
+
